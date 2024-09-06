@@ -215,7 +215,7 @@ export default {
         0
       );
 
-      // Calculate remaining stock by directly summing up current stock quantities from the backend data
+      
       this.remainingStock = this.products.reduce((acc, product) => {
         return acc + product.stockQuantity;
       }, 0);
@@ -240,7 +240,7 @@ export default {
             transaction.transactionId.toLowerCase().includes(transactionIdTerm)
         );
       }
-      // Filter by product name if a search term is provided
+     
       if (searchTerm) {
         this.filteredTransactions = this.filteredTransactions.filter(
           (transaction) =>
@@ -248,20 +248,20 @@ export default {
         );
       }
 
-      // Filter by date if a date is selected
+     
       if (this.date) {
-        const selectedDate = new Date(this.date).setHours(0, 0, 0, 0); // Normalize the selected date
+        const selectedDate = new Date(this.date).setHours(0, 0, 0, 0); 
         this.filteredTransactions = this.filteredTransactions.filter(
           (transaction) => {
             const transactionDate = new Date(
               transaction.transactionDate
-            ).setHours(0, 0, 0, 0); // Normalize the transaction date
+            ).setHours(0, 0, 0, 0); 
             return transactionDate === selectedDate;
           }
         );
       }
 
-      // Recalculate metrics based on the filtered transactions
+      
       this.calculateMetrics();
     },
     goBack() {

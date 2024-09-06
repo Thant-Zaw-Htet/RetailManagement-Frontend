@@ -133,7 +133,7 @@
               class="cart-item"
             >
               <div class="cart-item-info">
-                <!-- Cross button to remove the item -->
+                
                 <button
                   class="clear-item-button"
                   @click="removeFromCart(index)"

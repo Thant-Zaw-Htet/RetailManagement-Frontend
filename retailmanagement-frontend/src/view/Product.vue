@@ -113,7 +113,7 @@
                           <v-text-field
                             v-model="editedItem.StockQuantity"
                             label="Stock Quantity"
-                            :rules="[rules.required, rules.number]"
+                            :rules="[rules.required, rules.number]" 
                             :error-messages="errors.StockQuantity"
                           ></v-text-field>
                         </v-col>
@@ -442,7 +442,7 @@ export default {
       return this.products.some(
         (product) =>
           product.ProductName.toLowerCase() === name.toLowerCase() &&
-          product.ProductId !== excludeProductId // Exclude the currently edited item
+          product.ProductId !== excludeProductId 
       );
     },
 
@@ -459,7 +459,7 @@ export default {
     },
     editItem(item) {
       this.editedItem = { ...item };
-      this.formTitle = `Edit Item - ${item.ProductId}`;
+      this.formTitle = `Edit Item - ${item.ProductCode}`;
       this.errors = {
         ProductName: [],
         StockQuantity: [],

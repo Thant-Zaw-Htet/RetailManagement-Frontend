@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar">
       <ul class="nav-links">
-        <!-- blank -->
+     
       </ul>
     </nav>
     <div class="content">
@@ -75,9 +75,8 @@ export default {
   text-decoration: underline;
 }
 
-/* Content styling */
 .content {
-  padding-top: 15%; /* Adjust to ensure content is below the navbar */
+  padding-top: 15%; 
   display: flex;
   justify-content: center;
   align-items: center;
