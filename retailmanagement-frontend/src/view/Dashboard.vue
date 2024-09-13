@@ -89,6 +89,7 @@
             <thead>
               <tr class="column-name">
                 <th class="text-left">Transaction ID</th>
+                <th class="text-left">Customer</th>
                 <th class="text-left">Product Code</th>
                 <th class="text-left">Product Name</th>
                 <th class="text-left">Total Selling Quantity</th>
@@ -104,7 +105,8 @@
                 class="data"
               >
                 <td>{{ item.transactionId }}</td>
-                <td>{{ item.productCode }}</td>
+                <td>{{ item.userName }}</td>
+                <td>{{ item.productCode }}</td>               
                 <td>{{ item.productName }}</td>
                 <td>{{ item.sellingQuantity }}</td>
                 <td>{{ item.totalProfit }}</td>
@@ -177,6 +179,7 @@ export default {
     async fetchTransactions() {
       try {
         const response = await axios.get("/api/Transaction/GetTransactions");
+        console.log("Transactions Data:", response.data.data);
         this.transactions = response.data.data;
         this.filteredTransactions = this.transactions;
         this.calculateMetrics();
@@ -261,8 +264,9 @@ export default {
         );
       }
 
-      
+      console.log("Filtered Transactions:", this.filteredTransactions); // Log filtered transactions
       this.calculateMetrics();
+      
     },
     goBack() {
       this.$router.go(-1);

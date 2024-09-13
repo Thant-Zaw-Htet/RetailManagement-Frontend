@@ -14,6 +14,8 @@
         </div>
       </div>
     </nav>
+
+    <!-- No Products Dialog -->
     <v-dialog v-model="showEmptyCartDialog" max-width="500px">
       <v-card class="custom-dialog-card">
         <v-card-title class="headline center-title"
@@ -34,35 +36,35 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <v-dialog v-model="showTransactionsDialog" max-width="1000px">
-      <v-card class="white-background">
-        <v-card-title
-          class="headline"
-          style="background-color: #257ba0; color: white"
+    <v-dialog v-model="showTransactionsDialog" max-width="800px">
+      <v-card class="custom-card">
+        <v-card-title class="custom-card-title"
+          >Transaction History</v-card-title
         >
-          Transaction History
-        </v-card-title>
+
+        <!-- v-data-table to show transactions -->
         <v-data-table
           :headers="transactionHeaders"
           :items="transactions"
           item-key="transactionId"
-          class="white-background"
+          class="white-background custom-table"
         >
-          <!-- Define custom slot for date formatting -->
+          <!-- Slot to format transactionDate if needed -->
           <template v-slot:item.transactionDate="{ item }">
             {{ item.transactionDate }}
           </template>
         </v-data-table>
+
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green" text @click="showTransactionsDialog = false">
-            Close
-          </v-btn>
+          <v-btn color="green" text @click="showTransactionsDialog = false"
+            >Close</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
 
+    <!-- Search Bar -->
     <div class="search-bar">
       <div class="search-container">
         <nav class="navbar-bg-body-tertiary-first">
@@ -98,6 +100,7 @@
       </div>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content">
       <div class="image-container-wrapper">
         <div class="image-container">
@@ -118,11 +121,14 @@
             </div>
           </div>
         </div>
-        <
       </div>
 
+      <!-- Cart Section -->
       <div class="cart-section">
         <div class="cart-container">
+          <div class="cart-user-info">
+            <h3>Welcome, {{ username }}</h3>
+          </div>
           <div class="cart-header">
             <h2>Shopping Cart</h2>
           </div>
@@ -133,7 +139,6 @@
               class="cart-item"
             >
               <div class="cart-item-info">
-                
                 <button
                   class="clear-item-button"
                   @click="removeFromCart(index)"
@@ -161,64 +166,74 @@
         </div>
       </div>
     </div>
-  </div>
-  <v-dialog v-model="paymentSuccessDialog" max-width="800px" persistent>
-    <v-card
-      class="d-flex align-center justify-center"
-      style="
-        background-color: white;
-        border-radius: 12px;
-        height: 8cm;
-        padding: 20px;
-      "
-    >
-      <v-card-title class="text-h5" style="color: #257ba0">
-        <v-icon class="success-icon">mdi-check-circle</v-icon>
-        Payment Successful
-      </v-card-title>
-      <v-card-text>Your payment has been processed successfully!</v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="white"
-          @click="closePaymentSuccess"
-          style="font-size: 16px; padding: 10px 20px; background-color: #257ba0"
-        >
-          OK
-        </v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <v-dialog v-model="showStockLimitDialog" max-width="400px">
-    <v-card class="stock-limit-dialog-card">
-      <v-card-title class="headline center-title"
-        >Stock Limit Reached</v-card-title
+
+    <!-- Payment Success Dialog -->
+    <v-dialog v-model="paymentSuccessDialog" max-width="800px" persistent>
+      <v-card
+        class="d-flex align-center justify-center"
+        style="
+          background-color: white;
+          border-radius: 12px;
+          height: 8cm;
+          padding: 20px;
+        "
       >
-      <v-card-text class="center-text">
-        <v-icon class="warning-icon">mdi-alert-circle</v-icon>
-        You have reached the stock limit for this product.
-      </v-card-text>
-      <v-card-actions class="center-actions">
-        <v-spacer></v-spacer>
-        <v-btn
-          class="close-btn"
-          color="white"
-          @click="showStockLimitDialog = false"
+        <v-card-title class="text-h5" style="color: #257ba0">
+          <v-icon class="success-icon">mdi-check-circle</v-icon>
+          Payment Successful
+        </v-card-title>
+        <v-card-text>Your payment has been processed successfully!</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="white"
+            @click="closePaymentSuccess"
+            style="
+              font-size: 16px;
+              padding: 10px 20px;
+              background-color: #257ba0;
+            "
+          >
+            OK
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Stock Limit Dialog -->
+    <v-dialog v-model="showStockLimitDialog" max-width="400px">
+      <v-card class="stock-limit-dialog-card">
+        <v-card-title class="headline center-title"
+          >Stock Limit Reached</v-card-title
         >
-          Close
-        </v-btn>
-        <v-spacer></v-spacer>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <v-snackbar v-model="snackbar.show" :color="snackbar.color" top>
+        <v-card-text class="center-text">
+          <v-icon class="warning-icon">mdi-alert-circle</v-icon>
+          You have reached the stock limit for this product.
+        </v-card-text>
+        <v-card-actions class="center-actions">
+          <v-spacer></v-spacer>
+          <v-btn
+            class="close-btn"
+            color="white"
+            @click="showStockLimitDialog = false"
+            >Close</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- Snackbar -->
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color" top>
       <div class="d-flex justify-center align-center">
         {{ snackbar.message }}
-        <v-btn class="ml-4" color="white" text @click="snackbar.show = false">Close</v-btn>
+        <v-btn class="ml-4" color="white" text @click="snackbar.show = false"
+          >Close</v-btn
+        >
       </div>
     </v-snackbar>
-  
+  </div>
 </template>
 
 <script>
@@ -229,23 +244,15 @@ export default {
   name: "App",
   data() {
     return {
-      showDialog: false,
+      userId: null,
+      username: localStorage.getItem("username") || "Guest",
       showEmptyCartDialog: false,
       showTransactionsDialog: false,
-      searchId: "",
-      searchName: "",
       searchCode: "",
+      searchName: "",
       products: [],
       cart: [],
       transactions: [],
-      snackbar: {
-        show: false,
-        message: '',
-        color: 'error'
-      },
-      showTransactionsTable: false,
-      paymentSuccessDialog: false,
-      showStockLimitDialog: false,
       transactionHeaders: [
         {
           title: "Transaction ID",
@@ -290,6 +297,27 @@ export default {
           align: "center",
         },
       ],
+      showTransactionsDialog: false,
+      errorDialog: false,
+      errorMessage: "",
+      snackbar: {
+        show: false,
+        message: "",
+        color: "error",
+      },
+      async created() {
+        // Get userId from localStorage
+        this.userId = localStorage.getItem("userId");
+
+        if (this.userId) {
+          await this.fetchTransactionsTable();
+        } else {
+          console.error("User ID not found in localStorage");
+        }
+      },
+      showTransactionsTable: false,
+      paymentSuccessDialog: false,
+      showStockLimitDialog: false,
     };
   },
   computed: {
@@ -314,6 +342,9 @@ export default {
     },
   },
   methods: {
+    selectUser(user) {
+      this.userId = user.id;
+    },
     async fetchProducts() {
       try {
         const response = await axios.get("/api/Product/GetProductByAll");
@@ -367,7 +398,7 @@ export default {
         }
       }
     },
-    showSnackbar(message, color = 'error') {
+    showSnackbar(message, color = "error") {
       this.snackbar.message = message;
       this.snackbar.color = color;
       this.snackbar.show = true;
@@ -407,12 +438,12 @@ export default {
         return;
       }
       try {
+        console.log("Username:", this.username); // Add this line to debug
         const transactions = this.cart.map((item) => ({
           productName: item.ProductName,
           sellingQuantity: item.quantity,
+          userName: this.username,
         }));
-
-        console.log("Sending transactions:", transactions);
 
         const response = await axios.post(
           "/api/Transaction/CreateTransaction",
@@ -425,24 +456,44 @@ export default {
         this.paymentSuccessDialog = true;
         this.fetchTransactions();
       } catch (error) {
-        console.error("Error saving cart:", error);
-        alert("Failed to save the cart. Please try again.");
+        if (error.response && error.response.data) {
+          console.error("Error saving cart:", error.response.data);
+          alert(
+            "Failed to save the cart: " +
+              JSON.stringify(error.response.data.errors)
+          );
+        } else {
+          console.error("Error saving cart:", error.message);
+          alert("Failed to save the cart. Please try again.");
+        }
       }
     },
+
     async fetchTransactionsTable() {
+      const userId = localStorage.getItem("userId");
+      console.log("Retrieved userId from localStorage:", userId);
+
+      if (!userId) {
+        console.error("Invalid userId: null");
+        this.errorMessage = "User ID is not set.";
+        this.errorDialog = true;
+        return;
+      }
+
       try {
-        const response = await axios.get("/api/Transaction/GetTransactions");
+        const response = await axios.get(
+          `/api/Transaction/GetTransactionsByUserId/${userId}`
+        );
+        console.log("Retrieved userId from localStorage:", response);
         this.transactions = response.data.data.map((transaction) => {
           const dateStr = transaction.transactionDate;
           const date = new Date(dateStr);
-
           const formattedDate = !isNaN(date.getTime())
             ? date.toLocaleDateString()
             : "Invalid Date";
 
           return {
             transactionId: transaction.transactionId,
-            // productId: transaction.productId,
             productCode: transaction.productCode,
             productName: transaction.productName,
             sellingQuantity: transaction.sellingQuantity,
@@ -451,12 +502,14 @@ export default {
             transactionDate: formattedDate,
           };
         });
-        console.log("Formatted transactions:", this.transactions);
         this.showTransactionsDialog = true;
-        this.showTransactionsTable = true;
       } catch (error) {
-        console.error("Error fetching transactions:", error);
-        alert("Failed to fetch transactions. Please try again.");
+        console.error(
+          "Error fetching transactions:",
+          error.response ? error.response.data : error.message
+        );
+        this.errorMessage = "An error occurred while fetching transactions.";
+        this.errorDialog = true;
       }
     },
     async fetchTransactions() {
@@ -486,6 +539,7 @@ export default {
         alert("Failed to fetch transactions. Please try again.");
       }
     },
+
     goBack() {
       this.$router.go(-1);
     },
@@ -501,6 +555,7 @@ export default {
       });
     },
   },
+
   mounted() {
     this.fetchProducts();
   },
@@ -517,6 +572,27 @@ export default {
 .white-background {
   background-color: white !important;
   color: #000000;
+}
+.custom-table .v-data-table-header,
+.custom-table .v-data-table-footer {
+  background-color: white !important; /* Ensures the header and footer are white */
+}
+
+.custom-table th {
+  color: black !important; /* Changes header text color */
+}
+
+.custom-table td {
+  color: black !important; /* Changes body text color */
+}
+
+.custom-card-title {
+  background-color: #257ba0;
+  color: black;
+  padding: 16px;
+}
+.custom-card {
+  background-color: #257ba0;
 }
 .transactions-button .v-icon {
   font-size: 1.5rem;
@@ -548,7 +624,7 @@ export default {
 
 .center-actions {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
 }
 
 .close-btn {
@@ -904,5 +980,10 @@ export default {
 .center-actions {
   display: flex;
   justify-content: center;
+}
+.cart-user-info{
+  background-color: #1a5a6b;
+  text-align: center;
+  padding: 5px;
 }
 </style>
